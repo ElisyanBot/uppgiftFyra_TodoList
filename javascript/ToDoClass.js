@@ -4,7 +4,7 @@ import newElement from "./newElementFunction.js"; //element constructor
 export default class TodoList{
     constructor(name, i){
         this.name = name,
-        this.id = name.replace(/\s/g,''); 
+        this.id = name.replace(/\s/g,''); //+ random nummer?? 
         this.taskStorage = []
         //minnemering av listan
     }
@@ -12,15 +12,27 @@ export default class TodoList{
     Task(text){
         return {
             text,
-            setAsDone: function(){},
+            id: 2, //nytt id för varje task...
+            taskDone:false,
+            setAsDone: function(){
+                const checkBox = ''; //skapa ett id för varje task
+            },
             changeTask: function(){}
         }
     }
     
-    addTask(InnerText){
-        //add task to storage lika med new task
-        this.taskStorage.push(this.Task(InnerText));
-           this.displayTask(this.taskStorage.length - 1);
+    addTask(taskText){
+        const parrentElement = document.getElementById(this.id)
+        const input = newElement('input', null, 'newTask-input', 'text');
+        parrentElement.appendChild(input)
+
+        input.addEventListener('keyup', (event)=>{
+            if(event.keyCode === 13){
+                this.taskStorage.push(this.Task(input.value));
+                this.displayTask(this.taskStorage.length - 1);
+                input.remove();
+            }
+        })
     }
     
     displayTask(i){ // 'i' is used in the for-loop at renderTodoLists() to get all task in the list.
@@ -28,7 +40,7 @@ export default class TodoList{
         const parrentElement = document.getElementById(this.id)
         //creating task elements
         let newTask = newElement('li', null, 'task', null);
-        let checkbox = newElement('input', null, 'checkbox-task', null, 'checkbox')
+        let checkbox = newElement('input', null, 'checkbox-task', null/*${this.id}_task*/, 'checkbox')
         newTask.appendChild(checkbox)
         let taskText = newElement('p', this.taskStorage[i].text, 'task-paragraph', null)
         newTask.appendChild(taskText)
@@ -55,7 +67,7 @@ export default class TodoList{
             }
     }
     
-    // hideTasks(){
-    //     // hide section of tasks
-    // }
+    editTasks(newTaskText){
+        this.text = newTaskText;
+    }
 }

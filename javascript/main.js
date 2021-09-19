@@ -16,38 +16,37 @@ createTodoBtn.addEventListener('click', ()=>{
 //needs a function that do not allow for same name. or make speical id for list with same name.
 function renderNewTodoList(){
     let i = todoStorage.length;
-    const input = document.querySelector('#newTodoList-input').value;
-        createNewTodo(input);
+    const newTodoListInput = document.querySelector('#newTodoList-input');
+        createNewTodo(newTodoListInput.value);
         displayTodo(todoStorage[i].name, todoStorage[i].id, column)
-
+        
         //added function to delete btn. (make this to a function)
         let deleteBtn = document.querySelector(`#${todoStorage[i].id}_deleteTodoBtn`)
-            deleteBtn.addEventListener('click', () => {
-                todoStorage[i].deleteTodo(todoStorage,todoStorage[i]);
-            })
-
+        deleteBtn.addEventListener('click', () => {
+            todoStorage[i].deleteTodo(todoStorage,todoStorage[i]);
+        })
+        
         //added function to addTask btn. (make this to a function)
         let addBtn = document.querySelector(`#${todoStorage[i].id}_addTaskBtn`)
-            addBtn.addEventListener('click', () => {
-                todoStorage[i].addTask('task'); //make user input instead if 'task'
-            })
-
+        addBtn.addEventListener('click', () => {
+            todoStorage[i].addTask('task'); //make user input instead if 'task'
+        })
+        
         //added function to Hide btn. (make this to a function)
         let hideBtn = document.querySelector(`#${todoStorage[i].id}_hideTasksBtn`)
         hideBtn.addEventListener('click', () => {
-                let taskHolder = document.querySelector(`#${todoStorage[i].id}`)
-                if(taskHolder.style.display === 'block'){
-                    taskHolder.style.display = 'none';
-                    hideBtn.innerText = 'Show';
-                } else {
-                    taskHolder.style.display = 'block'
-                    hideBtn.innerText = 'Hide';
-                }
-
-            })
+            let taskHolder = document.querySelector(`#${todoStorage[i].id}`)
+            if(taskHolder.style.display === 'block'){
+                taskHolder.style.display = 'none';
+                hideBtn.innerText = 'Show';
+            } else {
+                taskHolder.style.display = 'block'
+                hideBtn.innerText = 'Hide';
+            }
             
-            
-    column < 3? column++ : column = 0;
+        })
+        column < 3? column++ : column = 0;
+        newTodoListInput.value = null; // makes the input element empty
 }
 
 //push newTodo to todoStorage
