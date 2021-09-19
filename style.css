@@ -1,0 +1,176 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html{
+    font-size: 62.5%;
+    /*1rem = 10px*/
+}
+
+header{
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ background-color: white;
+ 
+ height: 10rem;
+ width: 100%;
+
+ margin: auto;
+
+}
+
+.searchBar-container{
+    display: flex;
+    justify-content: space-between;
+    background-color: white;
+    width: 50rem;
+
+    border: 1px solid rgb(66, 66, 66);
+    border-radius: 4rem;
+    overflow: hidden;
+}
+
+    /* .searchBar-container:{
+        outline: none;
+        border: none;
+    } */
+
+        #SearchBar-Input{
+            text-align: center;
+            border: none;
+            width: 80%;
+        }
+
+        #SearchBar-btn{
+            background-color: #AFD9FF;
+            border: none;
+            width: fit-content;
+            padding: 1rem 5rem;
+        }
+
+#TodoListSection{
+    
+    border: 2px solid red;
+    height: fit-content;
+    width: 100%;
+    max-width: 140rem;
+    margin: auto;
+}
+    .alignmentHolder{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        gap: 1rem;
+
+        border: 2px solid red;
+        height: fit-content;
+        width: 100%;
+        max-width: 85%;
+        margin: auto;
+    }
+        .ColumnHolder{
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+
+            width: 24%;
+            height: fit-content;
+        }
+            .todoList{
+                width: 100%;
+                background-color: #E4FFB7;
+                height: fit-content;
+            }
+        
+                .todoList-head{
+                    display: flex;
+                    justify-content: space-evenly;
+                    align-items: center;
+                    height: 4rem;
+
+                    border-bottom: 1px solid black;
+                }
+                    .addTask-btn, .deleteTask-btn{
+                        height: 100%;
+                        width: 20%;
+                        padding: 0.3rem;
+                        background: none;
+                        border: none;
+                        
+                        text-align: center;
+                    }
+                        .addTask-btn:hover, .deleteTask-btn:hover, .hideTodoList-btn:hover{
+                            background-color: rgba(140, 143, 125, 0.479);
+                            cursor: pointer;
+                        }
+
+                    .todo-nameText{
+                        width: 60%;
+                        text-align: center;
+                    }
+                    
+
+                .taskHolder{
+                    display: block;
+                    padding: 1rem 0;
+                    width: 90%;
+                    margin: auto;
+                    height: fit-content;
+                    max-height: 50rem;
+                    overflow: hidden;
+                }
+                    .task{
+                        list-style: none;
+                        display: flex;
+                        gap: 0.5rem;
+                        width: 100%;
+
+                        margin: 0.3rem 0;
+                    }
+
+                        .Checkbox{
+                            
+                        }
+                        .task-paragraph{
+                            height: fit-content;
+                            width: 80%;
+                            min-height: 2rem;
+                            font-size: 1.4rem;
+                        }
+
+                        .editTask{
+                            background-color: rgb(255, 247, 131);
+                            height: 2rem;
+                        }
+
+                        .deleteTask{
+                            background-color: rgb(255, 131, 131);
+                            height: 2rem;
+                        }
+                        
+                .hideTodoList-btn{
+                    display: flex;
+                    width: 100%;
+                    height: 3rem;
+                    justify-content: center;
+                    align-items: center;
+
+                    background: none;
+                    border: none;
+                    
+                    font-size: 1.4rem;
+                }
+    footer{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        
+        /* background-color: rgb(110, 110, 110); */
+        height: 10rem;
+        width: 100%;
+        max-width: 150rem;
+        margin: auto;
+     }

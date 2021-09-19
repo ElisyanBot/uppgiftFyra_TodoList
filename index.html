@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="style.css">
+        <title>uppgiftFyra-ToDo</title>
+    </head>
+    <body>
+        <header>
+            <div class="newTodoList-container">
+                <input type="text" id="newTodoList-input" value="">
+                <button id="newTodoList-btn">new TodoList</button>
+            </div>
+            <div class="searchBar-container">
+                <label for="SearchBar-Input"></label>
+                <input type="text" name="searchBar" id="SearchBar-Input">
+                <button type="submit" id="SearchBar-btn">Search</button>
+            </div>
+        </header>
+
+        <section id="TodoListSection">
+            <div class="alignmentHolder">
+                <div class="ColumnHolder" id="columnOne"><!-- todo lists goes here --></div>
+                <div class="ColumnHolder" id="columnTwo"><!-- todo lists goes here --></div>
+                <div class="ColumnHolder" id="columnThree"><!-- todo lists goes here --></div>
+                <div class="ColumnHolder" id="columnFour"><!-- todo lists goes here --></div>
+            </div>
+        </section>
+        <footer>
+            
+        </footer>
+
+        <script type="module" src="javascript/main.js"></script>
+    </body>
+</html>
