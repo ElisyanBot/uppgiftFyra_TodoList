@@ -36,12 +36,39 @@ export default class TodoList{
     Task(text){
         return {
             text,
-            id: 0, //random number later on?
             taskDone:false,
+            id: this.id,
+            taskID: this.taskID,
             setAsDone: function(){
                 const checkBox = ''; 
             },
-            editTask: function(){}
+            editTask: function(){
+                const taskText =  document.querySelector(`#${this.id}${this.taskID}_taskParagraph`);
+                const userInput = newElement('input', null, 'newTask-input', 'text');
+                let oldText = taskText.innerText
+
+                taskText.innerText = null
+                taskText.appendChild(userInput)
+                userInput.addEventListener('keyup', (event) => {
+
+                       //on 'enter key' -- new text
+                    if(event.keyCode === 13){
+                        taskText.innerText = userInput.value;
+                        userInput.remove(); 
+                    }
+
+                    //esc btn --> make it old text
+                    if(event.keyCode === 27){
+                        taskText.innerText = oldText;
+                        userInput.remove(); 
+                    }
+                }) 
+               
+            },
+            removeTask: function () {
+                const task = document.querySelector(`#${this.id}${this.taskID}`);
+                task.remove();
+            }
         }
     }
     
@@ -63,7 +90,7 @@ export default class TodoList{
     
     /** redner task to taskHolder(task Section) */
     displayTask(storageIndex){
-        let taskID = this.taskStorage[storageIndex].id;
+        let taskStorageIndex= this.taskStorage[storageIndex];
 
         //fetching taskHolder(task section) id
         const parrentElement = document.getElementById(this.id)
@@ -71,31 +98,24 @@ export default class TodoList{
             //creating task elements
             let newTask = newElement('li', null, 'task', `${this.id}${this.taskID}`);
             let checkbox = newElement('input', null, 'checkbox-task', `${this.id}${this.taskID}_taskCheckbox`, 'checkbox')
-            newTask.appendChild(checkbox)
-                let taskText = newElement('p', this.taskStorage[storageIndex].text, 'task-paragraph', `${this.id}${this.taskID}_taskParagraph`)
-            newTask.appendChild(taskText)
+                newTask.appendChild(checkbox)
+            let taskText = newElement('p', this.taskStorage[storageIndex].text, 'task-paragraph', `${this.id}${this.taskID}_taskParagraph`)
+                newTask.appendChild(taskText)
             let editTaskBtn = newElement('button', 'edit', 'editTask', `${this.id}${this.taskID}_editTaskBtn`)
-            newTask.appendChild(editTaskBtn)
-            let deleteTodoBtn = newElement('button', 'delete', 'deleteTask', `${this.id}${this.taskID}_deleteTaskBtn`)
-            newTask.appendChild(deleteTodoBtn)
+                newTask.appendChild(editTaskBtn)
+            let deleteTaskBtn = newElement('button', 'delete', 'deleteTask', `${this.id}${this.taskID}_deleteTaskBtn`)
+                newTask.appendChild(deleteTaskBtn)
 
         //appends to task holder/ task sections        
         parrentElement.appendChild(newTask);
         //added btn functionallity
-        this.removeTask();
+        deleteTaskBtn.addEventListener('click', () => taskStorageIndex.removeTask())
+        editTaskBtn.addEventListener('click', () => taskStorageIndex.editTask(newTask, editTaskBtn))
         this.taskID++;
     }
     
     removeTask(){
-        const task = document.querySelector(`#${this.id}${this.taskID}`);
-        console.log(task);
-
-        const deleteTaskBtn = document.querySelector(`#${this.id}${this.taskID}_deleteTaskBtn`);
-        console.log(deleteTaskBtn);
-
-                deleteTaskBtn.addEventListener('click', () => {
-                    task.remove();
-                })
+        
     }
 
     /** edits the innertext of the task*/
