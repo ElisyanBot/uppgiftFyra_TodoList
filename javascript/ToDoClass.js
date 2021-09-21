@@ -36,16 +36,26 @@ export default class TodoList{
     Task(text){
         return {
             text,
-            taskDone:false,
+            taskDone: false,
             id: this.id,
             taskID: this.taskID,
-            setAsDone: function(){
-                const checkBox = ''; 
+            setAsDone: function(paragraph){
+                if(this.taskDone === false){
+                    paragraph.classList.add('task-done')
+                    this.taskDone = true;
+                }else{
+                    paragraph.classList.remove('task-done');
+                    this.taskDone = false;
+                }
+
             },
             editTask: function(){
                 const taskText =  document.querySelector(`#${this.id}${this.taskID}_taskParagraph`);
+                const editTaskBtn = document.querySelector(`#${this.id}${this.taskID}_editTaskBtn`)
                 const userInput = newElement('input', null, 'newTask-input', 'text');
                 let oldText = taskText.innerText
+               
+                editTaskBtn.disabled = true;
 
                 taskText.innerText = null
                 taskText.appendChild(userInput)
@@ -55,12 +65,14 @@ export default class TodoList{
                     if(event.keyCode === 13){
                         taskText.innerText = userInput.value;
                         userInput.remove(); 
+                        editTaskBtn.disabled = false;
                     }
 
                     //esc btn --> make it old text
                     if(event.keyCode === 27){
                         taskText.innerText = oldText;
-                        userInput.remove(); 
+                        userInput.remove();
+                        editTaskBtn.disabled = false;
                     }
                 }) 
                
@@ -73,7 +85,7 @@ export default class TodoList{
     }
     
     /** creates new task on enter key press */
-    addTask(taskText){
+    addTask(){
         const parrentElement = document.getElementById(this.id)
         const userInput = newElement('input', null, 'newTask-input', 'text');
         parrentElement.appendChild(userInput)
@@ -85,6 +97,9 @@ export default class TodoList{
                 userInput.remove();
                 this.displayTask(this.taskStorage.length - 1);
             }
+            if(event.keyCode === 27){
+                userInput.remove();
+            }
         })
     }
     
@@ -93,34 +108,28 @@ export default class TodoList{
         let taskStorageIndex= this.taskStorage[storageIndex];
 
         //fetching taskHolder(task section) id
-        const parrentElement = document.getElementById(this.id)
+        const parrentElement = document.getElementById(this.id);
 
             //creating task elements
             let newTask = newElement('li', null, 'task', `${this.id}${this.taskID}`);
-            let checkbox = newElement('input', null, 'checkbox-task', `${this.id}${this.taskID}_taskCheckbox`, 'checkbox')
-                newTask.appendChild(checkbox)
-            let taskText = newElement('p', this.taskStorage[storageIndex].text, 'task-paragraph', `${this.id}${this.taskID}_taskParagraph`)
-                newTask.appendChild(taskText)
-            let editTaskBtn = newElement('button', 'edit', 'editTask', `${this.id}${this.taskID}_editTaskBtn`)
-                newTask.appendChild(editTaskBtn)
-            let deleteTaskBtn = newElement('button', 'delete', 'deleteTask', `${this.id}${this.taskID}_deleteTaskBtn`)
-                newTask.appendChild(deleteTaskBtn)
+            let checkbox = newElement('input', null, 'checkbox-task', `${this.id}${this.taskID}_taskCheckbox`, 'checkbox');
+                newTask.appendChild(checkbox);
+            let taskText = newElement('p', this.taskStorage[storageIndex].text, 'task-paragraph', `${this.id}${this.taskID}_taskParagraph`);
+                newTask.appendChild(taskText);
+            let editTaskBtn = newElement('button', 'edit', 'editTask', `${this.id}${this.taskID}_editTaskBtn`);
+                newTask.appendChild(editTaskBtn);
+            let deleteTaskBtn = newElement('button', 'delete', 'deleteTask', `${this.id}${this.taskID}_deleteTaskBtn`);
+                newTask.appendChild(deleteTaskBtn);
 
         //appends to task holder/ task sections        
         parrentElement.appendChild(newTask);
         //added btn functionallity
-        deleteTaskBtn.addEventListener('click', () => taskStorageIndex.removeTask())
-        editTaskBtn.addEventListener('click', () => taskStorageIndex.editTask(newTask, editTaskBtn))
-        this.taskID++;
-    }
-    
-    removeTask(){
-        
-    }
+        deleteTaskBtn.addEventListener('click', () => taskStorageIndex.removeTask());
+        editTaskBtn.addEventListener('click', () => taskStorageIndex.editTask());
+        checkbox.addEventListener('click', () => taskStorageIndex.setAsDone(taskText));
+        // taskText.parentNode.addEventListener('click', ()=> taskStorageIndex.setAsDone(taskText))
 
-    /** edits the innertext of the task*/
-    editTasks(newTaskText){
-        this.text = newTaskText;
+        this.taskID++;
     }
     
     deleteTodo(todoStorage,  todoList){

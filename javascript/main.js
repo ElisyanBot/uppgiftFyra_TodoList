@@ -10,14 +10,29 @@ let numberOfListsCreated = 0; //used for special id:s at todo list
 
 //stores and add eventlistener to createTodoBTN in header
 const createTodoBtn = document.querySelector('#newTodoList-btn');
-createTodoBtn.addEventListener('click', ()=>{
-    displayNewTodoList();
-})
-    
+    createTodoBtn.addEventListener('click', ()=>{
+        if(newTodoListInput.value.length < 1) {
+            alert("ops! you didn't write a list name")
+        } else {
+                displayNewTodoList(); 
+        }
+    })
+
+const newTodoListInput = document.querySelector('#newTodoList-input');
+newTodoListInput.addEventListener('keyup',(event) => {
+        if(newTodoListInput.value.length < 1) {
+            alert("ops! you did not write a list name")
+        } else {
+            if(event.keyCode === 13){
+                displayNewTodoList(); 
+            }
+        }
+        
+    })
+        
 /** displays and adds funtionallity to a new todo List*/
 function displayNewTodoList(){
     let i = todoStorage.length;
-    const newTodoListInput = document.querySelector('#newTodoList-input');
 
         createNewTodo(newTodoListInput.value);
         displayTodo(todoStorage[i].name, todoStorage[i].id, flexColumn)
@@ -42,7 +57,7 @@ function displayNewTodoList(){
         //added function to addTask btn. (make this to a function)
         let addBtn = document.querySelector(`#${todoStorage[i].id}_addTaskBtn`)
         addBtn.addEventListener('click', () => {
-            todoStorage[i].addTask('task'); //make user input instead if 'task'
+            todoStorage[i].addTask();
         })
         
         //added function to Hide btn. (make this to a function)
