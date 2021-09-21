@@ -1,31 +1,44 @@
 import TodoList from "./ToDoClass.js";
-import newElement from "./newElementFunction.js";
+import newElement from "./functions/newElementFunction.js";
+import { btnClick, btnHide } from "./functions/ClickButtonFunctions.js";
 
 
-let todoStorage = [] //stores all lists ever created during a session.
-let column = 0;
-let numberOfLists = 0; //keeps track on how many lists
+const todoStorage = [] //stores all lists ever created during a session.
+let flexColumn = 0; // keeps track on wich column the todolist should be created on. //behöver ett bättre sätt att göra detta på...
+let numberOfListsCreated = 0; //used for special id:s at todo list
 
 
 //stores and add eventlistener to createTodoBTN in header
 const createTodoBtn = document.querySelector('#newTodoList-btn');
 createTodoBtn.addEventListener('click', ()=>{
-    renderNewTodoList(); //behöver en annan funktion som lägger till den absolut senaste i todo, store.
+    displayNewTodoList();
 })
     
-//needs a function that do not allow for same name. or make speical id for list with same name.
-function renderNewTodoList(){
+/** displays and adds funtionallity to a new todo List*/
+function displayNewTodoList(){
     let i = todoStorage.length;
     const newTodoListInput = document.querySelector('#newTodoList-input');
+
         createNewTodo(newTodoListInput.value);
-        displayTodo(todoStorage[i].name, todoStorage[i].id, column)
+        displayTodo(todoStorage[i].name, todoStorage[i].id, flexColumn)
+
+        // const test = [
+        //     `#${todoStorage[i].id}_deleteTodoBtn`, 
+        //     `#${todoStorage[i].id}_addTaskBtn`, 
+        //     `#${todoStorage[i].id}_hideTasksBtn`
+        // ]
+
+        // btnClick(test[0]);
+        // // btnClick(test[1], todoStorage[i].addTask('task'));
+        // // hideBtn(test[2]);
         
-        //added function to delete btn. (make this to a function)
+        // added function to delete btn. (make this to a function)
         let deleteBtn = document.querySelector(`#${todoStorage[i].id}_deleteTodoBtn`)
         deleteBtn.addEventListener('click', () => {
             todoStorage[i].deleteTodo(todoStorage,todoStorage[i]);
         })
         
+    
         //added function to addTask btn. (make this to a function)
         let addBtn = document.querySelector(`#${todoStorage[i].id}_addTaskBtn`)
         addBtn.addEventListener('click', () => {
@@ -34,7 +47,7 @@ function renderNewTodoList(){
         
         //added function to Hide btn. (make this to a function)
         let hideBtn = document.querySelector(`#${todoStorage[i].id}_hideTasksBtn`)
-        hideBtn.addEventListener('click', () => {
+        hideBtn.addEventListener ('click', () => {
             let taskHolder = document.querySelector(`#${todoStorage[i].id}`)
             if(taskHolder.style.display === 'block'){
                 taskHolder.style.display = 'none';
@@ -43,20 +56,19 @@ function renderNewTodoList(){
                 taskHolder.style.display = 'block'
                 hideBtn.innerText = 'Hide';
             }
-            
         })
-        column < 3? column++ : column = 0;
-        newTodoListInput.value = null; // makes the input element empty
+
+    flexColumn < 3? flexColumn++ : flexColumn = 0; //needs a better system...
+    newTodoListInput.value = null; // makes the input element empty
 }
 
-//push newTodo to todoStorage
-function createNewTodo(name){
-    todoStorage.push(new TodoList(name, numberOfLists));
-    numberOfLists++
+/** push newTodo to todoStorage */
+function createNewTodo(todoListName){
+    todoStorage.push(new TodoList(todoListName, numberOfListsCreated));
+    numberOfListsCreated++
 }
 
-
-//prints out new todo for the first time.
+/** prints out new todo for the first time. */
 function renderAllTodoLists(){
     for(let todoList of todoStorage){
         //displays the todo lists
@@ -70,9 +82,8 @@ function renderAllTodoLists(){
     // addDeleteBtn()
 }
 
-
-//creates the elements needed to display all of the todo lists.
-function displayTodo(innerTextTitle, todoListId, column){
+/** creates and appends the elements needed to display a todoList. */
+function displayTodo(titleName, todoListId, column){
     //stores all the ids of the diffrent css flex columns that holds the lists.
     const FlexColumns = [ 
         document.querySelector('#columnOne'), document.querySelector('#columnTwo'),
@@ -85,7 +96,7 @@ function displayTodo(innerTextTitle, todoListId, column){
         todoList.appendChild(todoListHead);
             let addTaskBtn = newElement('button', 'addTask', 'addTask-btn', `${todoListId}_addTaskBtn`);
                 todoListHead.appendChild(addTaskBtn);
-            let todoListTitle = newElement('h2', innerTextTitle, 'todo-nameText', null);
+            let todoListTitle = newElement('h2', titleName, 'todo-nameText', null);
                 todoListHead.appendChild(todoListTitle);
             let deleteTodoBtn = newElement('button', 'delete', 'deleteTask-btn', `${todoListId}_deleteTodoBtn`);
                 todoListHead.appendChild(deleteTodoBtn);

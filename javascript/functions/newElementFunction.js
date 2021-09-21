@@ -1,6 +1,6 @@
 //jsdoc
 /** 
- * element constructor: tag, InnerText, className, idName, typeName.
+ * element constructor: (tag, InnerText, className, idName, typeName)
  * 
  * you need to put null at idName when callback if you not going to use it... 
  * else you get an id of undefind right now.
