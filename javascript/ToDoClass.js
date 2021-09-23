@@ -78,7 +78,7 @@ export default class TodoList{
                
             },
             removeTask: function () {
-                const task = document.querySelector(`#${this.id}${this.taskID}`);
+                const task = document.querySelector(`#${this.id}${this.taskID}_taskSection`);
                 task.remove();
             }
         }
@@ -86,7 +86,7 @@ export default class TodoList{
     
     /** creates new task on enter key press */
     addTask(){
-        const parrentElement = document.getElementById(this.id)
+        const parrentElement = document.querySelector(`#${this.id}_taskSection`);
         const userInput = newElement('input', null, 'newTask-input', 'text');
         parrentElement.appendChild(userInput)
 
@@ -104,7 +104,7 @@ export default class TodoList{
     }
     
    
-    
+    /** removing elements from the browser and reseting the list tasks. */
     deleteTodoList(){
         const deleteTodoList = document.querySelector(`#${this.id}_todolist`);
             if(deleteTodoList === null ) {
@@ -134,7 +134,7 @@ export default class TodoList{
                 let deleteTodoBtn = newElement('button', 'delete', 'deleteTask-btn', `${this.id}_deleteTodoBtn`);
                     todoListHead.appendChild(deleteTodoBtn);
             //body
-                let taskHolder = newElement('ul', null, 'taskHolder', /* ID */ this.id); //id to the task section of the created todolist
+                let taskHolder = newElement('ul', null, 'taskHolder', `${this.id}_taskSection`);
                     todoList.appendChild(taskHolder);
                 let hideTodoListBtn = newElement('button', 'Hide', 'hideTodoList-btn',  `${this.id}_hideTasksBtn`)
                     todoList.appendChild(hideTodoListBtn);
@@ -157,13 +157,13 @@ export default class TodoList{
 
      /** redner task to taskHolder(task Section) */
      displayTask(storageIndex){
-        let taskStorageIndex= this.taskStorage[storageIndex];
+        const taskStorageIndex = this.taskStorage[storageIndex];
 
         //fetching taskHolder(task section) id
-        const parrentElement = document.getElementById(this.id);
+        const parrentElement = document.querySelector(`#${this.id}_taskSection`);
 
             //creating task elements
-            let newTask = newElement('li', null, 'task', `${this.id}${this.taskID}`);
+            let newTask = newElement('li', null, 'task', `${this.id}${this.taskID}_taskSection`);
             let checkbox = newElement('input', null, 'checkbox-task', `${this.id}${this.taskID}_taskCheckbox`, 'checkbox');
                 newTask.appendChild(checkbox);
             let taskText = newElement('p', this.taskStorage[storageIndex].text, 'task-paragraph', `${this.id}${this.taskID}_taskParagraph`);
