@@ -103,8 +103,60 @@ export default class TodoList{
         })
     }
     
-    /** redner task to taskHolder(task Section) */
-    displayTask(storageIndex){
+   
+    
+    deleteTodoList(){
+        const deleteTodoList = document.querySelector(`#${this.id}_todolist`);
+            if(deleteTodoList === null ) {
+                console.log('err: todoList id do not exist');
+            } else {
+                deleteTodoList.remove();
+                this.taskStorage = [];
+            }
+    }
+    
+    /** reders a new todolist element with btn functionality */
+    displayTodoList(titleName, column){
+        //stores all the ids of the diffrent css flex columns that holds the lists.
+        const FlexColumns = [ 
+            document.querySelector('#columnOne'), document.querySelector('#columnTwo'),
+            document.querySelector('#columnThree'), document.querySelector('#columnFour')
+        ]
+            //createing elements and appending ttem
+            let todoList = newElement('div', null, 'todoList', `${this.id}_todolist`);
+            //Head
+            let todoListHead = newElement('div', null, 'todoList-head', null)
+            todoList.appendChild(todoListHead);
+                let addTaskBtn = newElement('button', 'addTask', 'addTask-btn', `${this.id}_addTaskBtn`);
+                    todoListHead.appendChild(addTaskBtn);
+                let todoListTitle = newElement('h2', titleName, 'todo-nameText', null);
+                    todoListHead.appendChild(todoListTitle);
+                let deleteTodoBtn = newElement('button', 'delete', 'deleteTask-btn', `${this.id}_deleteTodoBtn`);
+                    todoListHead.appendChild(deleteTodoBtn);
+            //body
+                let taskHolder = newElement('ul', null, 'taskHolder', /* ID */ this.id); //id to the task section of the created todolist
+                    todoList.appendChild(taskHolder);
+                let hideTodoListBtn = newElement('button', 'Hide', 'hideTodoList-btn',  `${this.id}_hideTasksBtn`)
+                    todoList.appendChild(hideTodoListBtn);
+        //spreeds the todos out to diffrent columns.
+        FlexColumns[column].appendChild(todoList)
+
+        //btn functionality
+        addTaskBtn.addEventListener('click', () => this.addTask());
+        deleteTodoBtn.addEventListener('click', () => this.deleteTodoList());
+        hideTodoListBtn.addEventListener('click', () => {
+            if(taskHolder.style.display === 'block'){
+                taskHolder.style.display = 'none';
+                hideTodoListBtn.innerText = 'Show';
+            } else {
+                taskHolder.style.display = 'block'
+                hideTodoListBtn.innerText = 'Hide';
+            }
+        });
+    }
+
+     /** redner task to taskHolder(task Section) */
+     displayTask(storageIndex){
         let taskStorageIndex= this.taskStorage[storageIndex];
 
         //fetching taskHolder(task section) id
@@ -120,10 +172,10 @@ export default class TodoList{
                 newTask.appendChild(editTaskBtn);
             let deleteTaskBtn = newElement('button', 'delete', 'deleteTask', `${this.id}${this.taskID}_deleteTaskBtn`);
                 newTask.appendChild(deleteTaskBtn);
-
         //appends to task holder/ task sections        
         parrentElement.appendChild(newTask);
-        //added btn functionallity
+
+        //added btn functionality
         deleteTaskBtn.addEventListener('click', () => taskStorageIndex.removeTask());
         editTaskBtn.addEventListener('click', () => taskStorageIndex.editTask());
         checkbox.addEventListener('click', () => taskStorageIndex.setAsDone(taskText));
@@ -131,16 +183,5 @@ export default class TodoList{
 
         this.taskID++;
     }
-    
-    deleteTodo(todoStorage,  todoList){
-        const deleteTodoList = document.querySelector(`#${this.id}_todolist`);
-            if(deleteTodoList === null ) {
-                console.log('err: todoList id do not exist');
-            } else {
-                deleteTodoList.remove();
-                this.taskStorage = [];
-            }
-    }
-    
    
 }
