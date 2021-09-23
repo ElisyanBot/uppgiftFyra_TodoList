@@ -1,8 +1,8 @@
 import TodoList from "./ToDoClass.js";
 
-const todoStorage = [] //stores all lists ever created during a session.
+let todoStorage = [] //stores all lists ever created during a session.
 let flexColumn = 0; // keeps track on wich column the todolist should be created on. //behöver ett bättre sätt att göra detta på...
-let numberOfListsCreated = 0; //used for special id:s at todo list
+let numberOfListsCreated = 0; //used for special id:s at todo list //needs to be stord at localStorage
 
 
 //stores and add eventlistener to createTodoBTN in header
@@ -40,22 +40,38 @@ function displayNewTodoList(){
 
 /** push newTodo to todoStorage */
 function createNewTodo(todoListName){
+    pushToLocalStorage(todoListName)
     todoStorage.push(new TodoList(todoListName, numberOfListsCreated));
-    numberOfListsCreated++
+    numberOfListsCreated++;
 }
 
-/** prints out new todo for the first time. */
-function renderAllTodoLists(){
-    for(let todoList of todoStorage){
-        //displays the todo lists
-        displayTodo(todoList.name, todoList.id);
-        column < 3? column++ : column = 0 //changes flex column
+function pushToLocalStorage(ListName) {
+    let TodoLists;
+    if(localStorage.getItem('TodoLists') === null){
+        TodoLists = [];
+    } else {
+        TodoLists = JSON.parse(localStorage.getItem('TodoLists'));
+    }
 
-            for(let i = 0; i < todoList.taskStorage.length; i++){
-                todoList.displayTask(i);
+    TodoLists.push(new TodoList(ListName));
+    localStorage.setItem("TodoLists", JSON.stringify(TodoLists));
+}
+
+/** renders todolist from localstorage. */
+export function renderFromLocalStorage(){
+    let i = todoStorage.length;
+    let localStorageTodoLists = JSON.parse(localStorage.getItem('TodoLists'))
+        for(let todoList of localStorageTodoLists){
+            //displays the todo lists
+            todoStorage.push(new TodoList(todoList.name, numberOfListsCreated));
+            todoStorage[i].displayTodoList(todoStorage[i].name, flexColumn)
+            numberOfListsCreated++
+            flexColumn < 3? flexColumn++ : flexColumn = 0; //needs a better system...
+
+
+                for(let i = 0; i < todoList.taskStorage.length; i++){
+                    todoList.displayTask(i);
+                }
             }
-        }
-    // addDeleteBtn()
-}
-
-// renderAllTodoLists(); //opens upp all the prev stored todoLists 
+} 
+renderFromLocalStorage(); //opens upp all the prev stored todoLists 

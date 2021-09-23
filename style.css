@@ -31,6 +31,7 @@ header{
     border: 1px solid rgb(66, 66, 66);
     border-radius: 4rem;
     overflow: hidden;
+    display: none;
 }
 
     /* .searchBar-container:{
@@ -179,3 +180,34 @@ header{
          text-decoration: line-through;
          color: gray;
      }
+
+     .newTodoList-container{
+        display: flex;
+        justify-content: space-between;
+        background-color: white;
+        width: 50rem;
+    
+        border: 1px solid rgb(66, 66, 66);
+        border-radius: 4rem;
+        overflow: hidden;
+     }
+
+     #newTodoList-input{
+        text-align: center;
+        border: none;
+        width: 80%;
+        font-size: 1.6rem;
+    }
+
+    #newTodoList-btn{
+        background-color: #AFD9FF;
+        border: none;
+        min-width: 2rem;
+        width: fit-content;
+        padding: 1rem 5rem;
+    }
+
+    #newTodoList-btn:hover{
+        background-color: #4e7292;
+        cursor: pointer;
+    }

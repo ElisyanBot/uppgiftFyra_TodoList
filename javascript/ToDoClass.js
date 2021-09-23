@@ -1,4 +1,5 @@
 import newElement from "./functions/newElementFunction.js"; //element constructor
+import { renderFromLocalStorage } from "./main.js";
 /**
  * TodoList class
  * 
@@ -76,7 +77,7 @@ export default class TodoList{
                     }
                 }) 
                
-            },
+            }, //need to update localstorage
             removeTask: function () {
                 const task = document.querySelector(`#${this.id}${this.taskID}_taskSection`);
                 task.remove();
@@ -101,7 +102,7 @@ export default class TodoList{
                 userInput.remove();
             }
         })
-    }
+    } //needs to update localstorge
     
    
     /** removing elements from the browser and reseting the list tasks. */
