@@ -1,5 +1,5 @@
 import newElement from "./functions/newElementFunction.js"; //element constructor
-import { renderFromLocalStorage } from "./main.js";
+import {render} from "./main.js";
 /**
  * TodoList class
  * 

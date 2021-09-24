@@ -1,7 +1,7 @@
 import TodoList from "./ToDoClass.js";
 
 let todoStorage = [] //stores all lists ever created during a session.
-let flexColumn = 0; // keeps track on wich column the todolist should be created on. //behöver ett bättre sätt att göra detta på...
+let flexColumn = 0; // keeps track on wich column the todolist should be created in. //behöver ett bättre sätt att göra detta på...
 let numberOfListsCreated = 0; //used for special id:s at todo list //needs to be stord at localStorage
 
 
@@ -31,47 +31,60 @@ newTodoListInput.addEventListener('keyup',(event) => {
 function displayNewTodoList(){
     let i = todoStorage.length;
 
+        //this is only for one list
         createNewTodo(newTodoListInput.value);
         todoStorage[i].displayTodoList(todoStorage[i].name, flexColumn)
 
-    flexColumn < 3? flexColumn++ : flexColumn = 0; //needs a better system...
+    flexColumn < 3? flexColumn++ : flexColumn = 0; //keep track on wich column to display the todolist in.
     newTodoListInput.value = null; // makes the input element empty
 }
 
 /** push newTodo to todoStorage */
 function createNewTodo(todoListName){
-    pushToLocalStorage(todoListName)
     todoStorage.push(new TodoList(todoListName, numberOfListsCreated));
+    pushToLocalStorage(todoListName) //obs! needs to be after todoStorage.push().
     numberOfListsCreated++;
 }
 
+/** add todoList from todoStorage when list gets created */
 function pushToLocalStorage(ListName) {
-    let TodoLists;
+    let TodoLists; //localstorage key
     if(localStorage.getItem('TodoLists') === null){
         TodoLists = [];
     } else {
-        TodoLists = JSON.parse(localStorage.getItem('TodoLists'));
+        TodoLists = JSON.parse(localStorage.getItem('TodoLists'));  
     }
 
-    TodoLists.push(new TodoList(ListName));
-    localStorage.setItem("TodoLists", JSON.stringify(TodoLists));
+    TodoLists.push(todoStorage[todoStorage.length - 1]);
+    localStorage.setItem("TodoLists", JSON.stringify(TodoLists)); //makes objects to strings
 }
 
-/** renders todolist from localstorage. */
-export function renderFromLocalStorage(){
-    let i = todoStorage.length;
+/** pulls from loaclstorage and push the lists to todoStorage */
+function pullTodoListFromLocalStorage(){
+    //create js objects
     let localStorageTodoLists = JSON.parse(localStorage.getItem('TodoLists'))
-        for(let todoList of localStorageTodoLists){
-            //displays the todo lists
+    if(localStorageTodoLists === null){
+        console.log('obs! localStorage is empty')
+    } else {
+        //loops and pushes the local storage key to todoStorage
+        for (let todoList of localStorageTodoLists) {
             todoStorage.push(new TodoList(todoList.name, numberOfListsCreated));
-            todoStorage[i].displayTodoList(todoStorage[i].name, flexColumn)
-            numberOfListsCreated++
-            flexColumn < 3? flexColumn++ : flexColumn = 0; //needs a better system...
+            numberOfListsCreated++; //make the ids work when re-rendered from localStorage.
+        }
+    }
+} 
 
+/** renders list at start from todoStorage --> need to pull from loaclstorage to work (or other permanet storage.) */
+export function render() {
+    pullTodoListFromLocalStorage();
+    for(let todoList of todoStorage){
+        todoList.displayTodoList(todoList.name, flexColumn)
+        flexColumn < 3? flexColumn++ : flexColumn = 0; //needs a better system...
 
-                for(let i = 0; i < todoList.taskStorage.length; i++){
+                  for(let i = 0; i < todoList.taskStorage.length; i++){
                     todoList.displayTask(i);
                 }
-            }
-} 
-renderFromLocalStorage(); //opens upp all the prev stored todoLists 
+    }
+}
+
+render(); //opens upp all the prev stored todoLists 
