@@ -2,7 +2,6 @@ import TodoList from "./ToDoClass.js";
 
 let todoStorage = [] //stores all lists ever created during a session.
 let flexColumn = 0; // keeps track on wich column the todolist should be created in. //behöver ett bättre sätt att göra detta på...
-let numberOfListsCreated = 0; //used for special id:s at todo list //needs to be stord at localStorage
 
 
 //stores and add eventlistener to createTodoBTN in header
@@ -41,13 +40,12 @@ function displayNewTodoList(){
 
 /** push newTodo to todoStorage */
 function createNewTodo(todoListName){
-    todoStorage.push(new TodoList(todoListName, numberOfListsCreated));
-    pushToLocalStorage(todoListName) //obs! needs to be after todoStorage.push().
-    numberOfListsCreated++;
+            todoStorage.push(new TodoList(todoListName));
+            pushToLocalStorage(todoListName) //obs! needs to be after todoStorage.push().
 }
 
 /** add todoList from todoStorage when list gets created */
-function pushToLocalStorage(ListName) {
+function pushToLocalStorage() {
     let TodoLists; //localstorage key
     if(localStorage.getItem('TodoLists') === null){
         TodoLists = [];
@@ -68,8 +66,7 @@ function pullTodoListFromLocalStorage(){
     } else {
         //loops and pushes the local storage key to todoStorage
         for (let todoList of localStorageTodoLists) {
-            todoStorage.push(new TodoList(todoList.name, numberOfListsCreated));
-            numberOfListsCreated++; //make the ids work when re-rendered from localStorage.
+            todoStorage.push(new TodoList(todoList.name));
         }
     }
 } 
@@ -87,4 +84,8 @@ export function render() {
     }
 }
 
-render(); //opens upp all the prev stored todoLists 
+render(); //opens upp all the prev stored todoLists  
+
+/*
+    bättre id, eller att man inte får använda sig av samma namn.
+*/

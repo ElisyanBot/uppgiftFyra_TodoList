@@ -26,9 +26,9 @@ import {render} from "./main.js";
 */
 
 export default class TodoList{
-    constructor(name, numberOfListCreated){
+    constructor(name){
         this.name = name,
-        this.id = name.replace(/\s/g,'') + numberOfListCreated; // random nummer function instead of numberOf list Created??? 
+        this.id = name.replace(/\s/g,''); // random nummer function instead of numberOf list Created??? 
         this.taskID = 0;
         this.taskStorage = []
         //minnemering av listan
@@ -111,8 +111,10 @@ export default class TodoList{
             if(deleteTodoList === null ) {
                 console.log('err: todoList id do not exist');
             } else {
+                deleteFromLocalStorage(`${this.id}`)
                 deleteTodoList.remove();
                 this.taskStorage = [];
+                window.location.reload()
             }
     }
     
@@ -185,4 +187,16 @@ export default class TodoList{
         this.taskID++;
     }
    
+}
+
+/** removes item from local storage */
+function deleteFromLocalStorage(deleteListId) {
+   const deleteItemID = deleteListId
+   const todoLists = JSON.parse(localStorage.getItem('TodoLists'));
+
+   for(let list of todoLists){
+       console.log(list.id, deleteItemID)
+       deleteItemID === list.id ? todoLists.splice(list, 1) : console.log('not removed');
+       localStorage.setItem('TodoLists', JSON.stringify(todoLists))
+   }
 }
